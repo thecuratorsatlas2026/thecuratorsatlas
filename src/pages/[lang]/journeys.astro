@@ -1,0 +1,252 @@
+---
+import Base from '../../layouts/Base.astro';
+import Plate from '../../components/Plate.astro';
+import { PRICES, SITE } from '../../config';
+import { langs, path, t, type Lang } from '../../i18n/ui';
+export function getStaticPaths() {
+  return langs.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Lang;
+const price = (k: keyof typeof PRICES) => PRICES[k] ?? t(lang, 'price.ask');
+
+const copy = {
+  en: {
+    title: 'Curated Journeys',
+    lede: 'Bespoke travel design with an editorial sensibility — and the privileges of Fora’s global hotel network.',
+    inKicker: 'I — Inbound',
+    inTitle: 'South America, Curated',
+    inText:
+      'For travelers from abroad who want Argentina, Uruguay and beyond as the people who love them know them: through private doors, working studios and houses with a story.',
+    inItems: [
+      ['Closed doors, opened', 'Private visits to artist studios, collectors’ homes, ateliers and galleries outside public hours.'],
+      ['Estancias & design-led stays', 'Working estancias, architect-designed lodges and boutique hotels chosen for character, not stars.'],
+      ['Slow routes', 'Buenos Aires and the Pampas, Uruguay’s coast and Garzón, Mendoza, Patagonia, the Sierras de Córdoba — paced to be savoured.'],
+      ['On-the-ground care', 'Trusted drivers, guides and hosts, reservations at the tables that matter, and support throughout your journey.'],
+    ],
+    outKicker: 'II — Outbound & Regional',
+    outTitle: 'Itineraries by Design',
+    outText:
+      'For Spanish-speaking travelers who want a route designed with aesthetic judgment — international or regional — and hours of research saved. Clear formats, clear deliverables.',
+    formats: [
+      {
+        key: 'express' as const,
+        name: 'Express Consultation',
+        sub: 'One focused session',
+        items: ['60-minute video call', 'Review of your plan or destination', 'Curated shortlist: hotels, tables, visits', 'Written summary within 48 h'],
+      },
+      {
+        key: 'essential' as const,
+        name: 'The Essential Route',
+        sub: 'Up to 7 days',
+        items: ['Day-by-day itinerary', 'Hotel selection and booking via Fora', 'Restaurants, museums and experiences', 'Logistics, timings and transfers', 'One round of adjustments'],
+      },
+      {
+        key: 'grand' as const,
+        name: 'The Grand Itinerary',
+        sub: 'Multi-destination',
+        items: ['Several countries or regions', 'Full route and transport design', 'Hotels via Fora with partner amenities', 'Private guides and special access', 'Support before and during the trip'],
+      },
+    ],
+    foraKicker: 'Hotel booking via Fora',
+    foraTitle: 'The same rate. More privileges.',
+    foraText:
+      'Hotel bookings are made through Fora Travel at the same price as booking direct. At partner properties, guests typically receive:',
+    perks: ['Daily breakfast for two', 'Hotel or spa credit', 'Room upgrade, subject to availability', 'Early check-in & late check-out, subject to availability', 'Recognition as a preferred guest'],
+    perksNote: 'Amenities vary by property and programme.',
+    stepsTitle: 'How it works',
+    steps: [
+      ['Conversation', 'Tell me how you like to travel. A short form and, if needed, a call.'],
+      ['Proposal', 'I design a route and a selection of stays matched to your criteria.'],
+      ['Refinement', 'We adjust together until every day feels right.'],
+      ['Departure', 'Bookings confirmed, a beautiful travel document, and support along the way.'],
+    ],
+  },
+  es: {
+    title: 'Viajes Curados',
+    lede: 'Diseño de viajes a medida con sensibilidad editorial — y los privilegios de la red global de hoteles de Fora.',
+    inKicker: 'I — Inbound',
+    inTitle: 'Sudamérica Curada',
+    inText:
+      'Para viajeros del exterior que quieren conocer Argentina, Uruguay y más allá como los conocen quienes los aman: a través de puertas privadas, talleres en actividad y casas con historia.',
+    inItems: [
+      ['Puertas cerradas, abiertas', 'Visitas privadas a talleres de artistas, casas de coleccionistas, ateliers y galerías fuera de horario.'],
+      ['Estancias y hoteles de diseño', 'Estancias de campo, lodges de autor y hoteles boutique elegidos por su carácter, no por sus estrellas.'],
+      ['Rutas slow', 'Buenos Aires y la llanura pampeana, la costa uruguaya y Garzón, Mendoza, Patagonia, las Sierras de Córdoba — al ritmo justo.'],
+      ['Acompañamiento en destino', 'Choferes, guías y anfitriones de confianza, reservas en las mesas que importan y asistencia durante el viaje.'],
+    ],
+    outKicker: 'II — Outbound y Regional',
+    outTitle: 'Itinerarios a Medida',
+    outText:
+      'Para viajeros hispanoparlantes que quieren una ruta diseñada con criterio estético —internacional o regional— y ahorrarse horas de investigación. Formatos claros, entregables claros.',
+    formats: [
+      {
+        key: 'express' as const,
+        name: 'Consultoría Express',
+        sub: 'Una sesión focalizada',
+        items: ['Videollamada de 60 minutos', 'Revisión de tu plan o destino', 'Selección curada: hoteles, mesas, visitas', 'Resumen escrito en 48 h'],
+      },
+      {
+        key: 'essential' as const,
+        name: 'Ruta Esencial',
+        sub: 'Hasta 7 días',
+        items: ['Itinerario día por día', 'Selección y reserva de hoteles vía Fora', 'Restaurantes, museos y experiencias', 'Logística, horarios y traslados', 'Una ronda de ajustes'],
+      },
+      {
+        key: 'grand' as const,
+        name: 'Gran Itinerario',
+        sub: 'Multidestino',
+        items: ['Varios países o regiones', 'Diseño completo de ruta y transporte', 'Hoteles vía Fora con beneficios de partners', 'Guías privados y accesos especiales', 'Asistencia antes y durante el viaje'],
+      },
+    ],
+    foraKicker: 'Gestión de hoteles vía Fora',
+    foraTitle: 'La misma tarifa. Más privilegios.',
+    foraText:
+      'Las reservas de hotel se hacen a través de Fora Travel, al mismo precio que reservando en forma directa. En los hoteles asociados, los huéspedes suelen recibir:',
+    perks: ['Desayuno diario para dos', 'Crédito para usar en el hotel o spa', 'Upgrade de habitación, sujeto a disponibilidad', 'Early check-in y late check-out, sujetos a disponibilidad', 'Reconocimiento como huésped preferencial'],
+    perksNote: 'Los beneficios varían según el hotel y el programa.',
+    stepsTitle: 'Cómo funciona',
+    steps: [
+      ['Conversación', 'Contame cómo te gusta viajar. Un formulario breve y, si hace falta, una llamada.'],
+      ['Propuesta', 'Diseño una ruta y una selección de alojamientos según tu criterio.'],
+      ['Ajustes', 'Afinamos juntos hasta que cada día se sienta justo.'],
+      ['Partida', 'Reservas confirmadas, un documento de viaje cuidado y acompañamiento en el camino.'],
+    ],
+  },
+}[lang];
+---
+<Base lang={lang} title={copy.title} description={copy.lede}>
+  <section class="wrap narrow center page-head">
+    <p class="kicker">{t(lang, 'nav.journeys')}</p>
+    <h1 class="h1 mt-s">{copy.title}</h1>
+    <p class="lede mt-s">{copy.lede}</p>
+  </section>
+
+  <!-- Inbound -->
+  <section id="inbound" class="section">
+    <div class="wrap split">
+      <Plate class="tall" tone="clay" label="Buenos Aires · Pampa · Patagonia" note={t(lang, 'plate.placeholder')} />
+      <div>
+        <p class="kicker">{copy.inKicker}</p>
+        <h2 class="h1 mt-s">{copy.inTitle}</h2>
+        <p class="lede mt-s">{copy.inText}</p>
+        <dl class="items mt-l">
+          {copy.inItems.map(([title, text]) => (
+            <div class="reveal"><dt class="h3">{title}</dt><dd>{text}</dd></div>
+          ))}
+        </dl>
+        <a class="btn mt-m" href={path(lang, 'work-with-me') + '?type=inbound'}>{t(lang, 'cta.contact')}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Outbound -->
+  <section id="outbound" class="section section--tint">
+    <div class="wrap">
+      <div class="narrow-head">
+        <p class="kicker">{copy.outKicker}</p>
+        <h2 class="h1 mt-s">{copy.outTitle}</h2>
+        <p class="lede mt-s">{copy.outText}</p>
+      </div>
+      <div class="formats mt-l">
+        {copy.formats.map((f, i) => (
+          <article class:list={['format', 'reveal', { 'format--featured': i === 1 }]}>
+            <p class="kicker">{f.sub}</p>
+            <h3 class="h2">{f.name}</h3>
+            <p class="price">{price(f.key)}</p>
+            <ul>{f.items.map((it) => <li>{it}</li>)}</ul>
+            <a class:list={['btn', { 'btn--ghost': i !== 1 }]} href={path(lang, 'work-with-me') + `?type=outbound&service=${f.key}`}>
+              {t(lang, 'cta.book')}
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Fora -->
+  <section class="section section--ink">
+    <div class="wrap split split--reverse">
+      <div>
+        <p class="kicker">{copy.foraKicker}</p>
+        <h2 class="h1 mt-s">{copy.foraTitle}</h2>
+        <p class="mt-s">{copy.foraText}</p>
+        <ul class="perks mt-m">{copy.perks.map((p) => <li>{p}</li>)}</ul>
+        <p class="note">{copy.perksNote}</p>
+        <a class="btn mt-m" href={SITE.foraProfileUrl} target="_blank" rel="noopener">{t(lang, 'cta.fora')}</a>
+      </div>
+      <Plate class="tall" tone="ink" label="Fora Travel" note={t(lang, 'plate.placeholder')} />
+    </div>
+  </section>
+
+  <!-- Proceso -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><h2 class="h2">{copy.stepsTitle}</h2></div>
+      <ol class="steps">
+        {copy.steps.map(([title, text], i) => (
+          <li class="reveal"><span class="num">0{i + 1}</span><h3 class="h3">{title}</h3><p>{text}</p></li>
+        ))}
+      </ol>
+      <div class="center mt-l">
+        <a class="btn" href={path(lang, 'work-with-me')}>{t(lang, 'cta.contact')}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-head { padding-top: clamp(48px, 7vw, 100px); }
+  .split {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(32px, 6vw, 96px);
+    align-items: start;
+  }
+  .split--reverse { grid-template-columns: 1.1fr 0.9fr; align-items: center; }
+  .split :global(.tall) { aspect-ratio: 3 / 4; position: sticky; top: 110px; }
+  @media (max-width: 860px) {
+    .split, .split--reverse { grid-template-columns: 1fr; }
+    .split :global(.tall) { position: static; aspect-ratio: 4 / 3; }
+  }
+  .items { display: grid; gap: 0; margin-bottom: 0; }
+  .items > div { border-top: 1px solid var(--line); padding-block: 22px; }
+  .items dd { margin: 8px 0 0; color: var(--ink-soft); }
+  .narrow-head { max-width: 720px; }
+
+  .formats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+  @media (max-width: 960px) { .formats { grid-template-columns: 1fr; } }
+  .format {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: clamp(28px, 3vw, 40px);
+    background: var(--paper);
+    border: 1px solid var(--line);
+  }
+  .format--featured { border-color: var(--ink); }
+  .format .price { font-family: var(--serif); font-style: italic; font-size: 1.3rem; margin: 0; color: var(--accent-deep); }
+  .format ul { list-style: none; padding: 0; margin: 8px 0 24px; flex: 1; }
+  .format li { padding-block: 10px; border-top: 1px solid var(--line); font-size: 0.95rem; }
+
+  .perks { list-style: none; padding: 0; margin-bottom: 0; }
+  .perks li { padding-block: 12px; border-top: 1px solid #3a3834; font-family: var(--serif); font-size: 1.25rem; color: var(--paper); }
+  .note { font-size: 0.8rem; margin-top: 12px; }
+
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px;
+  }
+  @media (max-width: 860px) { .steps { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
+  .steps li { border-top: 1px solid var(--ink); padding-top: 20px; display: grid; gap: 10px; align-content: start; }
+  .steps p { margin: 0; color: var(--ink-soft); }
+  .num { font-family: var(--serif); color: var(--accent-deep); font-size: 1.1rem; }
+</style>

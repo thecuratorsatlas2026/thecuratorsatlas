@@ -1,0 +1,109 @@
+---
+import { SITE } from '../config';
+import { categories, categoryLabels, path, t, type Lang } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="wrap cols">
+    <div class="about">
+      <p class="brand"><span class="italic">The</span> Curator’s Atlas</p>
+      <p class="text">{t(lang, 'footer.about')}</p>
+      <a class="btn mt-m" href={SITE.foraProfileUrl} target="_blank" rel="noopener">{t(lang, 'cta.fora')}</a>
+    </div>
+    <div>
+      <p class="kicker">{t(lang, 'nav.journal')}</p>
+      <ul>
+        {categories.map((c) => (
+          <li><a href={path(lang, 'journal', 'topics', c)}>{categoryLabels[lang][c].title}</a></li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <p class="kicker">{t(lang, 'footer.explore')}</p>
+      <ul>
+        <li><a href={path(lang, 'about')}>{t(lang, 'nav.about')}</a></li>
+        <li><a href={path(lang, 'journeys')}>{t(lang, 'nav.journeys')}</a></li>
+        <li><a href={path(lang, 'work-with-me')}>{t(lang, 'nav.work')}</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="kicker">{t(lang, 'footer.contact')}</p>
+      <ul>
+        <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+        <li><a href={SITE.instagram} target="_blank" rel="noopener">Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap legal">
+    <span>© {year} {SITE.name}. {t(lang, 'footer.rights')}</span>
+    <span>Fora Travel Advisor</span>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--ink);
+    color: #cfc8bc;
+    padding-top: clamp(64px, 8vw, 110px);
+  }
+  .cols {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+  }
+  .brand {
+    font-family: var(--serif);
+    font-size: 2rem;
+    color: var(--paper);
+    margin: 0 0 12px;
+  }
+  .text {
+    max-width: 36ch;
+    margin: 0;
+  }
+  .kicker {
+    color: #c9ad86;
+    margin: 0 0 18px;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+    font-size: 0.92rem;
+  }
+  a:not(.btn):hover {
+    color: var(--paper);
+  }
+  .btn {
+    background: var(--paper);
+    color: var(--ink);
+    border-color: var(--paper);
+  }
+  .btn:hover {
+    background: #c9ad86;
+    border-color: #c9ad86;
+  }
+  .legal {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 72px;
+    padding-block: 28px;
+    border-top: 1px solid #3a3834;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: #8f897f;
+  }
+  @media (max-width: 860px) {
+    .cols { grid-template-columns: 1fr 1fr; }
+    .about { grid-column: 1 / -1; }
+  }
+  @media (max-width: 480px) {
+    .cols { grid-template-columns: 1fr; }
+  }
+</style>

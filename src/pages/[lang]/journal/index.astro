@@ -1,0 +1,14 @@
+---
+import Base from '../../../layouts/Base.astro';
+import JournalList from '../../../components/JournalList.astro';
+import { langs, t, type Lang } from '../../../i18n/ui';
+import { getArticles } from '../../../lib/journal';
+export function getStaticPaths() {
+  return langs.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Lang;
+const articles = await getArticles(lang);
+---
+<Base lang={lang} title={t(lang, 'journal.title')} description={t(lang, 'journal.lede')}>
+  <JournalList lang={lang} articles={articles} />
+</Base>

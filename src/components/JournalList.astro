@@ -1,0 +1,50 @@
+---
+import ArticleCard from './ArticleCard.astro';
+import { categories, categoryLabels, path, t, type Category, type Lang } from '../i18n/ui';
+import type { Article } from '../lib/journal';
+interface Props { lang: Lang; articles: Article[]; active?: Category }
+const { lang, articles, active } = Astro.props;
+const L = categoryLabels[lang];
+---
+<section class="wrap journal-head">
+  <p class="kicker">{active ? t(lang, 'journal.title') : t(lang, 'home.kicker')}</p>
+  <h1 class="h1 mt-s">{active ? L[active].title : t(lang, 'journal.title')}</h1>
+  <p class="lede mt-s">{active ? L[active].blurb : t(lang, 'journal.lede')}</p>
+  <nav class="filters mt-m" aria-label="Sections">
+    <a href={path(lang, 'journal')} aria-current={!active ? 'page' : undefined}>{t(lang, 'journal.all')}</a>
+    {categories.map((c) => (
+      <a href={path(lang, 'journal', 'topics', c)} aria-current={active === c ? 'page' : undefined}>{L[c].title}</a>
+    ))}
+  </nav>
+</section>
+<section class="wrap list">
+  {articles.length ? (
+    <div class="grid grid--3">{articles.map((entry) => <ArticleCard entry={entry} lang={lang} />)}</div>
+  ) : (
+    <p class="lede center">{t(lang, 'journal.empty')}</p>
+  )}
+</section>
+
+<style>
+  .journal-head { padding-top: clamp(48px, 7vw, 100px); }
+  .journal-head .lede { max-width: 40ch; }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .filters a {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-bottom: 4px;
+    border-bottom: 1px solid transparent;
+  }
+  .filters a:hover { color: var(--ink); }
+  .filters a[aria-current='page'] { color: var(--ink); border-bottom-color: var(--ink); }
+  .list { padding-block: clamp(40px, 6vw, 80px) var(--space); }
+</style>

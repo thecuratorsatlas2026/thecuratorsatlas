@@ -1,0 +1,21 @@
+---
+interface Props {
+  src?: string;
+  alt?: string;
+  tone?: 'sand' | 'stone' | 'olive' | 'clay' | 'ink';
+  label?: string;
+  note?: string;
+  class?: string;
+  eager?: boolean;
+}
+const { src, alt = '', tone = 'sand', label, note, class: cls = '', eager = false } = Astro.props;
+---
+{src ? (
+  <div class:list={['plate', cls]}>
+    <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+  </div>
+) : (
+  <div class:list={['plate', 'plate--placeholder', `tone-${tone}`, cls]} role="img" aria-label={alt || label || ''}>
+    {label && <span class="plate__label">{label}{note && <small>{note}</small>}</span>}
+  </div>
+)}

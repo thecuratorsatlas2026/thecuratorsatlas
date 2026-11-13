@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import { t } from '../i18n/ui';
+const lang = 'en';
+---
+<Base lang={lang} title="404" alternates={{ en: '/en/', es: '/es/' }}>
+  <section class="section wrap narrow center">
+    <p class="kicker">404</p>
+    <h1 class="h1 mt-s">{t(lang, '404.title')}</h1>
+    <p class="lede mt-s"><span lang="es">{t('es', '404.title')}</span></p>
+    <div class="actions mt-m" style="justify-content:center">
+      <a class="btn" href="/en/">{t('en', '404.back')}</a>
+      <a class="btn btn--ghost" href="/es/">{t('es', '404.back')}</a>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,319 @@
+---
+import Base from '../../layouts/Base.astro';
+import { SITE } from '../../config';
+import { langs, t, type Lang } from '../../i18n/ui';
+export function getStaticPaths() {
+  return langs.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Lang;
+
+const c = {
+  en: {
+    title: 'Work With Me',
+    lede: 'Two ways to begin: book a hotel directly through my Fora profile, or tell me about your journey and I will design it with you.',
+    pathA: 'Book a hotel',
+    pathAText: 'Already know where you want to stay? Book through my Fora profile and receive partner amenities at the same rate.',
+    pathB: 'Design a journey',
+    pathBText: 'Complete the travel profile below. I reply personally within 48 hours.',
+    s1: 'About you',
+    name: 'Full name',
+    email: 'Email',
+    country: 'Country of residence',
+    language: 'Preferred language',
+    s2: 'Your journey',
+    audience: 'I am looking for',
+    inbound: 'A curated trip to South America',
+    outbound: 'An itinerary designed for me (international or regional)',
+    service: 'Service',
+    services: {
+      inbound: 'South America, Curated',
+      express: 'Express Consultation',
+      essential: 'The Essential Route (up to 7 days)',
+      grand: 'The Grand Itinerary (multi-destination)',
+      hotels: 'Hotel booking only',
+      unsure: 'Not sure yet',
+    },
+    destinations: 'Destinations in mind',
+    destinationsPh: 'e.g. Buenos Aires, Garzón, Patagonia…',
+    dates: 'Approximate dates',
+    datesPh: 'e.g. late March, flexible',
+    nights: 'Length (nights)',
+    travelers: 'Travelers',
+    travelersPh: 'e.g. 2 adults',
+    budget: 'Budget per person (excl. flights)',
+    budgets: ['Under USD 3,000', 'USD 3,000 – 6,000', 'USD 6,000 – 12,000', 'USD 12,000+', 'Prefer to discuss'],
+    s3: 'Your way of travelling',
+    interests: 'What moves you',
+    interestList: ['Art & galleries', 'Architecture', 'Design hotels', 'Gastronomy', 'Wine', 'Nature & landscape', 'History & heritage', 'Wellness', 'Craft & artisans', 'Photography'],
+    pace: 'Preferred pace',
+    paces: ['Very slow', 'Balanced', 'Full days'],
+    notes: 'Anything else I should know?',
+    notesPh: 'Celebrations, past trips you loved, things to avoid…',
+    source: 'How did you find me?',
+    submit: 'Send my travel profile',
+    sending: 'Sending…',
+    ok: 'Thank you. Your profile has arrived — I will be in touch within 48 hours.',
+    err: 'Something went wrong. Please write to me directly at',
+    select: 'Select…',
+  },
+  es: {
+    title: 'Trabajemos juntos',
+    lede: 'Dos formas de empezar: reservá un hotel directamente en mi perfil de Fora, o contame sobre tu viaje y lo diseñamos juntos.',
+    pathA: 'Reservar un hotel',
+    pathAText: '¿Ya sabés dónde querés alojarte? Reservá desde mi perfil de Fora y recibí beneficios de partners a la misma tarifa.',
+    pathB: 'Diseñar un viaje',
+    pathBText: 'Completá el perfil de viaje. Respondo personalmente dentro de las 48 horas.',
+    s1: 'Sobre vos',
+    name: 'Nombre y apellido',
+    email: 'Email',
+    country: 'País de residencia',
+    language: 'Idioma preferido',
+    s2: 'Tu viaje',
+    audience: 'Estoy buscando',
+    inbound: 'Un viaje curado por Sudamérica (viajo desde el exterior)',
+    outbound: 'Un itinerario a medida (internacional o regional)',
+    service: 'Servicio',
+    services: {
+      inbound: 'Sudamérica Curada',
+      express: 'Consultoría Express',
+      essential: 'Ruta Esencial (hasta 7 días)',
+      grand: 'Gran Itinerario (multidestino)',
+      hotels: 'Solo reserva de hoteles',
+      unsure: 'Todavía no lo sé',
+    },
+    destinations: 'Destinos en mente',
+    destinationsPh: 'ej. Japón, Toscana, Mendoza…',
+    dates: 'Fechas aproximadas',
+    datesPh: 'ej. fines de marzo, flexible',
+    nights: 'Duración (noches)',
+    travelers: 'Viajeros',
+    travelersPh: 'ej. 2 adultos',
+    budget: 'Presupuesto por persona (sin vuelos)',
+    budgets: ['Hasta USD 3.000', 'USD 3.000 – 6.000', 'USD 6.000 – 12.000', 'Más de USD 12.000', 'Prefiero conversarlo'],
+    s3: 'Tu forma de viajar',
+    interests: 'Lo que te mueve',
+    interestList: ['Arte y galerías', 'Arquitectura', 'Hoteles de diseño', 'Gastronomía', 'Vino', 'Naturaleza y paisaje', 'Historia y patrimonio', 'Bienestar', 'Oficios y artesanos', 'Fotografía'],
+    pace: 'Ritmo preferido',
+    paces: ['Muy slow', 'Equilibrado', 'Días completos'],
+    notes: '¿Algo más que deba saber?',
+    notesPh: 'Celebraciones, viajes que te encantaron, cosas a evitar…',
+    source: '¿Cómo me conociste?',
+    submit: 'Enviar mi perfil de viaje',
+    sending: 'Enviando…',
+    ok: 'Gracias. Tu perfil llegó — te escribo dentro de las 48 horas.',
+    err: 'Algo salió mal. Escribime directamente a',
+    select: 'Elegir…',
+  },
+}[lang];
+const S = c.services;
+---
+<Base lang={lang} title={c.title} description={c.lede}>
+  <section class="wrap narrow center page-head">
+    <p class="kicker">{t(lang, 'cta.book')}</p>
+    <h1 class="h1 mt-s">{c.title}</h1>
+    <p class="lede mt-s">{c.lede}</p>
+  </section>
+
+  <section class="wrap paths">
+    <a class="path" href={SITE.foraProfileUrl} target="_blank" rel="noopener">
+      <span class="kicker">01</span>
+      <h2 class="h2">{c.pathA}</h2>
+      <p>{c.pathAText}</p>
+      <span class="link">{t(lang, 'cta.fora')} ↗</span>
+    </a>
+    <a class="path path--dark" href="#profile">
+      <span class="kicker">02</span>
+      <h2 class="h2">{c.pathB}</h2>
+      <p>{c.pathBText}</p>
+      <span class="link">{t(lang, 'cta.contact')} ↓</span>
+    </a>
+  </section>
+
+  <section id="profile" class="section">
+    <div class="wrap narrow">
+      <form class="form" id="travel-form" data-endpoint={SITE.formEndpoint} data-email={SITE.email}
+            data-sending={c.sending} data-ok={c.ok} data-err={c.err}>
+        <input type="hidden" name="_subject" value="Nuevo perfil de viaje — The Curator's Atlas" />
+        <input type="hidden" name="site_language" value={lang} />
+        <input type="text" name="_gotcha" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+        <fieldset>
+          <legend>{c.s1}</legend>
+          <div class="row">
+            <label class="field"><span>{c.name}</span><input name="name" required autocomplete="name" /></label>
+            <label class="field"><span>{c.email}</span><input name="email" type="email" required autocomplete="email" /></label>
+          </div>
+          <div class="row">
+            <label class="field"><span>{c.country}</span><input name="country" autocomplete="country-name" /></label>
+            <label class="field"><span>{c.language}</span>
+              <select name="language">
+                <option value="es" selected={lang === 'es'}>Español</option>
+                <option value="en" selected={lang === 'en'}>English</option>
+              </select>
+            </label>
+          </div>
+        </fieldset>
+
+        <hr class="rule" />
+
+        <fieldset>
+          <legend>{c.s2}</legend>
+          <div class="field">
+            <span class="field__label">{c.audience}</span>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="type" value="inbound" checked={lang === 'en'} /><span>{c.inbound}</span></label>
+              <label class="choice"><input type="radio" name="type" value="outbound" checked={lang === 'es'} /><span>{c.outbound}</span></label>
+            </div>
+          </div>
+          <label class="field"><span>{c.service}</span>
+            <select name="service" id="service">
+              <option value="inbound" data-for="inbound">{S.inbound}</option>
+              <option value="express" data-for="outbound">{S.express}</option>
+              <option value="essential" data-for="outbound">{S.essential}</option>
+              <option value="grand" data-for="outbound">{S.grand}</option>
+              <option value="hotels">{S.hotels}</option>
+              <option value="unsure">{S.unsure}</option>
+            </select>
+          </label>
+          <label class="field"><span>{c.destinations}</span><input name="destinations" placeholder={c.destinationsPh} /></label>
+          <div class="row">
+            <label class="field"><span>{c.dates}</span><input name="dates" placeholder={c.datesPh} /></label>
+            <label class="field"><span>{c.nights}</span><input name="nights" type="number" min="1" inputmode="numeric" /></label>
+          </div>
+          <div class="row">
+            <label class="field"><span>{c.travelers}</span><input name="travelers" placeholder={c.travelersPh} /></label>
+            <label class="field"><span>{c.budget}</span>
+              <select name="budget">
+                <option value="">{c.select}</option>
+                {c.budgets.map((b) => <option>{b}</option>)}
+              </select>
+            </label>
+          </div>
+        </fieldset>
+
+        <hr class="rule" />
+
+        <fieldset>
+          <legend>{c.s3}</legend>
+          <div class="field">
+            <span class="field__label">{c.interests}</span>
+            <div class="choices">
+              {c.interestList.map((i) => <label class="choice"><input type="checkbox" name="interests" value={i} /><span>{i}</span></label>)}
+            </div>
+          </div>
+          <div class="field">
+            <span class="field__label">{c.pace}</span>
+            <div class="choices">
+              {c.paces.map((p, i) => <label class="choice"><input type="radio" name="pace" value={p} checked={i === 1} /><span>{p}</span></label>)}
+            </div>
+          </div>
+          <label class="field"><span>{c.notes}</span><textarea name="notes" placeholder={c.notesPh}></textarea></label>
+          <label class="field"><span>{c.source}</span><input name="source" /></label>
+        </fieldset>
+
+        <div>
+          <button class="btn" type="submit">{c.submit}</button>
+          <p class="status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const form = document.getElementById('travel-form') as HTMLFormElement | null;
+  if (form) {
+    const service = form.querySelector<HTMLSelectElement>('#service')!;
+    const status = form.querySelector<HTMLParagraphElement>('.status')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+
+    // Mostrar solo los servicios que corresponden al tipo de viajero.
+    const syncServices = () => {
+      const type = (form.querySelector('input[name=type]:checked') as HTMLInputElement)?.value;
+      let firstVisible: HTMLOptionElement | null = null;
+      service.querySelectorAll('option').forEach((o) => {
+        const show = !o.dataset.for || o.dataset.for === type;
+        o.hidden = !show;
+        o.disabled = !show;
+        if (show && o.dataset.for && !firstVisible) firstVisible = o;
+      });
+      if (service.selectedOptions[0]?.disabled && firstVisible) service.value = (firstVisible as HTMLOptionElement).value;
+    };
+    form.querySelectorAll('input[name=type]').forEach((r) => r.addEventListener('change', syncServices));
+
+    // Prellenar desde la URL (?type=outbound&service=essential) al venir de "Curated Journeys".
+    const params = new URLSearchParams(location.search);
+    const pType = params.get('type');
+    if (pType) {
+      const r = form.querySelector<HTMLInputElement>(`input[name=type][value="${pType}"]`);
+      if (r) r.checked = true;
+    }
+    syncServices();
+    const pService = params.get('service');
+    if (pService && service.querySelector(`option[value="${pService}"]:not([disabled])`)) service.value = pService;
+    if (pType || pService) document.getElementById('profile')?.scrollIntoView();
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      if (data.get('_gotcha')) return;
+      const endpoint = form.dataset.endpoint;
+      const email = form.dataset.email || '';
+
+      // Sin endpoint configurado: abrir el cliente de email con el perfil completo.
+      if (!endpoint) {
+        const lines: string[] = [];
+        const seen: Record<string, string[]> = {};
+        data.forEach((v, k) => {
+          if (k.startsWith('_')) return;
+          (seen[k] ||= []).push(String(v));
+        });
+        Object.entries(seen).forEach(([k, v]) => v.join('') && lines.push(`${k}: ${v.join(', ')}`));
+        location.href = `mailto:${email}?subject=${encodeURIComponent(String(data.get('_subject')))}&body=${encodeURIComponent(lines.join('\n'))}`;
+        return;
+      }
+
+      button.disabled = true;
+      status.textContent = form.dataset.sending || '';
+      try {
+        const res = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        syncServices();
+        status.textContent = form.dataset.ok || '';
+      } catch {
+        status.innerHTML = `${form.dataset.err} <a href="mailto:${email}">${email}</a>`;
+      } finally {
+        button.disabled = false;
+      }
+    });
+  }
+</script>
+
+<style>
+  .page-head { padding-top: clamp(48px, 7vw, 100px); }
+  .paths {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: clamp(40px, 6vw, 72px);
+  }
+  @media (max-width: 760px) { .paths { grid-template-columns: 1fr; } }
+  .path {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+    padding: clamp(28px, 4vw, 48px);
+    border: 1px solid var(--ink);
+    transition: background 0.3s ease;
+  }
+  .path p { margin: 0; color: var(--ink-soft); }
+  .path .link { justify-self: start; margin-top: 10px; }
+  .path:hover { background: var(--paper-deep); }
+  .path--dark { background: var(--ink); color: var(--paper); }
+  .path--dark p { color: #cfc8bc; }
+  .path--dark .kicker { color: #c9ad86; }
+  .path--dark:hover { background: #2c2a27; }
+  .status { margin: 16px 0 0; color: var(--accent-deep); min-height: 1.5em; }
+  .status :global(a) { border-bottom: 1px solid currentColor; }
+</style>

@@ -1,0 +1,82 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Plate from '../../../components/Plate.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import { SITE } from '../../../config';
+import { categoryLabels, formatDate, otherLang, path, t, type Lang } from '../../../i18n/ui';
+import { articleLang, articleSlug, articleUrl, getArticles, getTranslation, readingTime } from '../../../lib/journal';
+
+export async function getStaticPaths() {
+  const all = await getCollection('journal', (e) => !e.data.draft);
+  return all.map((entry) => ({ params: { lang: articleLang(entry), slug: articleSlug(entry) }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const lang = Astro.params.lang as Lang;
+const d = entry.data;
+const { Content } = await render(entry);
+
+const other = otherLang(lang);
+const translation = await getTranslation(entry, other);
+const alternates = { [lang]: articleUrl(entry), [other]: translation ? articleUrl(translation) : path(other, 'journal') };
+
+const siblings = (await getArticles(lang)).filter((a) => a.id !== entry.id);
+const related = [
+  ...siblings.filter((a) => a.data.category === d.category),
+  ...siblings.filter((a) => a.data.category !== d.category),
+].slice(0, 3);
+---
+<Base lang={lang} title={d.title} description={d.excerpt} alternates={alternates} image={d.cover}>
+  <article>
+    <header class="wrap narrow article-head center">
+      <a class="kicker" href={path(lang, 'journal', 'topics', d.category)}>{categoryLabels[lang][d.category].title}</a>
+      <h1 class="h1 mt-s">{d.title}</h1>
+      <p class="lede mt-s">{d.excerpt}</p>
+      <p class="meta mt-m">
+        {t(lang, 'article.by')} {SITE.founderName} · {formatDate(d.date, lang)} · {readingTime(entry.body)} {t(lang, 'article.read')}
+      </p>
+    </header>
+
+    <div class="wrap cover">
+      <Plate src={d.cover} alt={d.coverAlt} tone={d.tone} label={d.place}
+             note={d.cover ? undefined : t(lang, 'plate.placeholder')} eager />
+    </div>
+
+    <div class="wrap narrow prose body">
+      <Content />
+    </div>
+  </article>
+
+  <aside class="wrap narrow article-cta center">
+    <p class="kicker">{t(lang, 'nav.journeys')}</p>
+    <h2 class="h2 mt-s">{t(lang, 'article.cta.title')}</h2>
+    <p class="mt-s">{t(lang, 'article.cta.text')}</p>
+    <div class="actions mt-m" style="justify-content:center">
+      <a class="btn" href={path(lang, 'work-with-me')}>{t(lang, 'cta.contact')}</a>
+      <a class="btn btn--ghost" href={path(lang, 'journal')}>{t(lang, 'article.back')}</a>
+    </div>
+  </aside>
+
+  {related.length > 0 && (
+    <section class="section section--tint">
+      <div class="wrap">
+        <div class="section-head"><h2 class="h2">{t(lang, 'article.related')}</h2></div>
+        <div class="grid grid--3">{related.map((a) => <ArticleCard entry={a} lang={lang} />)}</div>
+      </div>
+    </section>
+  )}
+</Base>
+
+<style>
+  .article-head { padding-top: clamp(48px, 7vw, 100px); }
+  .article-head > a.kicker:hover { color: var(--ink); }
+  .cover { margin-block: clamp(40px, 6vw, 80px); }
+  .cover :global(.plate) { aspect-ratio: 16 / 9; }
+  @media (max-width: 640px) { .cover :global(.plate) { aspect-ratio: 4 / 5; } }
+  .body { padding-bottom: clamp(48px, 6vw, 80px); }
+  .article-cta {
+    padding-block: clamp(48px, 6vw, 80px) var(--space);
+    border-top: 1px solid var(--line);
+  }
+  .article-cta p:not(.kicker) { color: var(--ink-soft); }
+</style>

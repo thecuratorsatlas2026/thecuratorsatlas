@@ -1,0 +1,67 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../config';
+import { langs, path, t, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  title?: string;
+  description?: string;
+  /** URL equivalente en cada idioma; por defecto, la misma ruta con el otro prefijo. */
+  alternates?: Partial<Record<Lang, string>>;
+  image?: string;
+}
+const { lang, title, description = t(lang, 'tagline'), image } = Astro.props;
+
+const pathname = Astro.url.pathname;
+const swap = (l: Lang) => pathname.replace(/^\/(en|es)(\/|$)/, `/${l}/`);
+const alternates = Object.fromEntries(
+  langs.map((l) => [l, Astro.props.alternates?.[l] ?? (pathname.match(/^\/(en|es)/) ? swap(l) : path(l))])
+) as Record<Lang, string>;
+
+const fullTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — ${t(lang, 'tagline').split(' — ')[0]}`;
+const canonical = new URL(pathname, Astro.site);
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {langs.map((l) => <link rel="alternate" hreflang={l} href={new URL(alternates[l], Astro.site)} />)}
+    <link rel="alternate" hreflang="x-default" href={new URL(alternates.en, Astro.site)} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={lang === 'es' ? 'es_AR' : 'en_US'} />
+    {image && <meta property="og:image" content={new URL(image, Astro.site)} />}
+    <meta name="theme-color" content="#f4efe6" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <Header lang={lang} alternates={alternates} />
+    <main>
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <script>
+      const io = new IntersectionObserver(
+        (entries) => entries.forEach((e) => e.isIntersecting && (e.target.classList.add('is-in'), io.unobserve(e.target))),
+        { rootMargin: '0px 0px -8% 0px' }
+      );
+      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+    </script>
+  </body>
+</html>

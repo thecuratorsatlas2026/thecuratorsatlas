@@ -1,0 +1,175 @@
+---
+import Base from '../../layouts/Base.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import Plate from '../../components/Plate.astro';
+import { categories, categoryLabels, langs, path, t, type Lang } from '../../i18n/ui';
+import { articleUrl, getArticles } from '../../lib/journal';
+
+export function getStaticPaths() {
+  return langs.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Lang;
+const articles = await getArticles(lang);
+const featured = articles.find((a) => a.data.featured) ?? articles[0];
+const latest = articles.filter((a) => a !== featured).slice(0, 3);
+const L = categoryLabels[lang];
+---
+<Base lang={lang}>
+  <!-- Portada -->
+  <section class="hero wrap">
+    <div class="hero__text">
+      <p class="kicker">{t(lang, 'home.kicker')}</p>
+      <h1 class="display mt-s">{t(lang, 'home.title').split(',')[0]},<br /><span class="italic">{t(lang, 'home.title').split(',')[1]?.trim()}</span></h1>
+      <p class="lede mt-m">{t(lang, 'home.lede')}</p>
+      <div class="actions mt-m">
+        <a class="btn" href={path(lang, 'journal')}>{t(lang, 'home.cta.read')}</a>
+        <a class="btn btn--ghost" href={path(lang, 'work-with-me')}>{t(lang, 'home.cta.plan')}</a>
+      </div>
+    </div>
+    {featured && (
+      <a class="hero__feature" href={articleUrl(featured)}>
+        <Plate src={featured.data.cover} alt={featured.data.coverAlt} tone={featured.data.tone}
+               label={featured.data.place} note={featured.data.cover ? undefined : t(lang, 'plate.placeholder')} eager />
+        <div class="hero__caption">
+          <span class="kicker">{L[featured.data.category].title}</span>
+          <h2 class="h3">{featured.data.title}</h2>
+        </div>
+      </a>
+    )}
+  </section>
+
+  <!-- Últimos artículos -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="h2">{t(lang, 'home.latest')}</h2>
+        <a class="link" href={path(lang, 'journal')}>{t(lang, 'home.cta.read')}</a>
+      </div>
+      <div class="grid grid--3">
+        {latest.map((entry) => <ArticleCard entry={entry} lang={lang} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Secciones del Journal -->
+  <section class="section section--tint">
+    <div class="wrap">
+      <div class="section-head"><h2 class="h2">{t(lang, 'home.sections')}</h2></div>
+      <ol class="index">
+        {categories.map((c, i) => (
+          <li class="reveal">
+            <a href={path(lang, 'journal', 'topics', c)}>
+              <span class="index__n">0{i + 1}</span>
+              <span class="index__title h3">{L[c].title}</span>
+              <span class="index__blurb">{L[c].blurb}</span>
+              <span class="index__arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Servicios -->
+  <section class="section section--ink">
+    <div class="wrap">
+      <p class="kicker">{t(lang, 'home.services.kicker')}</p>
+      <h2 class="h1 mt-s" style="max-width:16ch">{t(lang, 'home.services.title')}</h2>
+      <div class="grid grid--2 mt-l">
+        <a class="service reveal" href={path(lang, 'journeys') + '#inbound'}>
+          <span class="kicker">I — Inbound</span>
+          <h3 class="h2">{t(lang, 'home.inbound.title')}</h3>
+          <p>{t(lang, 'home.inbound.text')}</p>
+          <span class="link">{t(lang, 'home.discover')}</span>
+        </a>
+        <a class="service reveal" href={path(lang, 'journeys') + '#outbound'}>
+          <span class="kicker">II — Outbound & Regional</span>
+          <h3 class="h2">{t(lang, 'home.outbound.title')}</h3>
+          <p>{t(lang, 'home.outbound.text')}</p>
+          <span class="link">{t(lang, 'home.discover')}</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(32px, 6vw, 96px);
+    align-items: center;
+    padding-block: clamp(48px, 8vw, 110px);
+  }
+  .hero__feature {
+    display: grid;
+    gap: 18px;
+  }
+  .hero__feature :global(.plate) {
+    aspect-ratio: 4 / 5;
+  }
+  .hero__caption {
+    display: grid;
+    gap: 8px;
+  }
+  .hero__feature:hover h2 {
+    color: var(--accent-deep);
+  }
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; }
+  }
+
+  .index {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .index a {
+    display: grid;
+    grid-template-columns: 60px 1fr 1.3fr 40px;
+    gap: 24px;
+    align-items: baseline;
+    padding-block: 30px;
+    border-bottom: 1px solid var(--line);
+    transition: padding 0.4s ease;
+  }
+  .index a:hover {
+    padding-left: 12px;
+  }
+  .index a:hover .index__title {
+    font-style: italic;
+  }
+  .index__n {
+    font-family: var(--serif);
+    color: var(--accent-deep);
+    font-size: 1.1rem;
+  }
+  .index__blurb {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+  .index__arrow {
+    text-align: right;
+  }
+  @media (max-width: 760px) {
+    .index a {
+      grid-template-columns: 40px 1fr 24px;
+    }
+    .index__blurb {
+      grid-column: 2 / 3;
+    }
+    .index__arrow { grid-row: 1; grid-column: 3; }
+  }
+
+  .service {
+    display: grid;
+    gap: 18px;
+    align-content: start;
+    padding-top: 28px;
+    border-top: 1px solid #3a3834;
+  }
+  .service p { margin: 0; max-width: 46ch; }
+  .service .link { justify-self: start; color: var(--paper); }
+  .service:hover h3 { font-style: italic; }
+</style>
