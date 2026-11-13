@@ -6,6 +6,10 @@ category: culture
 place: 'La Boca y Villa Crespo, Buenos Aires'
 translationKey: artist-studio
 tone: sand
+cover: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Fundaci%C3%B3n_Proa%2C_La_Boca_in_2026.jpg/1280px-Fundaci%C3%B3n_Proa%2C_La_Boca_in_2026.jpg'
+coverAlt: 'La fachada de la Fundación PROA en La Boca'
+coverCredit: 'Gonzabar77 · CC BY 4.0'
+coverCreditUrl: 'https://commons.wikimedia.org/wiki/File:Fundaci%C3%B3n_Proa%2C_La_Boca_in_2026.jpg'
 ---
 
 Un museo muestra lo que una cultura decidió conservar. Un taller muestra lo que todavía está decidiendo. Por eso, en cada ciudad, busco las puertas que dan a una obra en proceso.

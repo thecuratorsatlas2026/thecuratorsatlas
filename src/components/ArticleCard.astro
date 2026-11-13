@@ -7,7 +7,7 @@ const { entry, lang } = Astro.props;
 const d = entry.data;
 ---
 <a class="card reveal" href={articleUrl(entry)}>
-  <Plate src={d.cover} alt={d.coverAlt} tone={d.tone} label={d.place} note={d.cover ? undefined : t(lang, 'plate.placeholder')} />
+  <Plate src={d.cover} alt={d.coverAlt} credit={d.coverCredit} creditUrl={d.coverCreditUrl} linkCredit={false} tone={d.tone} label={d.place} note={d.cover ? undefined : t(lang, 'plate.placeholder')} />
   <div class="card__top">
     <span class="kicker">{categoryLabels[lang][d.category].title}</span>
     <span class="meta">{formatDate(d.date, lang)}</span>

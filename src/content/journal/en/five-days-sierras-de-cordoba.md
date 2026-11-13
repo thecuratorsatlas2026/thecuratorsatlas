@@ -6,6 +6,10 @@ category: itineraries
 place: 'Sierras de Córdoba, Argentina'
 translationKey: sierras-cordoba
 tone: stone
+cover: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Estancia_Jesu%C3%ADtica_Alta_Gracia_2.JPG/1280px-Estancia_Jesu%C3%ADtica_Alta_Gracia_2.JPG'
+coverAlt: 'Baroque detail of the Jesuit estancia church in Alta Gracia'
+coverCredit: 'Silber98 · CC BY-SA 3.0'
+coverCreditUrl: 'https://commons.wikimedia.org/wiki/File:Estancia_Jesu%C3%ADtica_Alta_Gracia_2.JPG'
 ---
 
 The Sierras de Córdoba are where Argentines go to slow down. Low mountains, clear rivers and villages that keep their own pace make it an ideal first route for travelers who prefer depth to distance.

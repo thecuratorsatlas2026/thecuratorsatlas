@@ -28,7 +28,7 @@ const L = categoryLabels[lang];
     </div>
     {featured && (
       <a class="hero__feature" href={articleUrl(featured)}>
-        <Plate src={featured.data.cover} alt={featured.data.coverAlt} tone={featured.data.tone}
+        <Plate src={featured.data.cover} alt={featured.data.coverAlt} credit={featured.data.coverCredit} creditUrl={featured.data.coverCreditUrl} linkCredit={false} tone={featured.data.tone}
                label={featured.data.place} note={featured.data.cover ? undefined : t(lang, 'plate.placeholder')} eager />
         <div class="hero__caption">
           <span class="kicker">{L[featured.data.category].title}</span>

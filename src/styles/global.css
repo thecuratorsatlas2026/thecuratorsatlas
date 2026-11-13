@@ -254,6 +254,8 @@ h4 {
   background: var(--paper-deep);
 }
 .plate img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -584,4 +586,23 @@ a:hover .plate img {
 
 [id] {
   scroll-margin-top: 100px;
+}
+
+.plate__credit {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  max-width: 100%;
+  padding: 4px 8px;
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(30, 29, 27, 0.45);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 1;
+}
+a.plate__credit:hover {
+  color: #fff;
 }

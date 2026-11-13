@@ -6,6 +6,10 @@ category: culture
 place: 'La Boca & Villa Crespo, Buenos Aires'
 translationKey: artist-studio
 tone: sand
+cover: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Fundaci%C3%B3n_Proa%2C_La_Boca_in_2026.jpg/1280px-Fundaci%C3%B3n_Proa%2C_La_Boca_in_2026.jpg'
+coverAlt: 'The façade of Fundación PROA in La Boca'
+coverCredit: 'Gonzabar77 · CC BY 4.0'
+coverCreditUrl: 'https://commons.wikimedia.org/wiki/File:Fundaci%C3%B3n_Proa%2C_La_Boca_in_2026.jpg'
 ---
 
 A museum shows you what a culture has decided to keep. A studio shows you what it is still deciding. That is why, in every city, I look for the doors that open onto work in progress.

@@ -6,6 +6,10 @@ category: destinations
 place: 'Buenos Aires, Argentina'
 translationKey: buenos-aires-slow
 tone: clay
+cover: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Aspects_of_Recoleta%2C_Buenos_Aires%2C_17th._Jan._2011_-_Flickr_-_PhillipC_%282%29.jpg/1280px-Aspects_of_Recoleta%2C_Buenos_Aires%2C_17th._Jan._2011_-_Flickr_-_PhillipC_%282%29.jpg'
+coverAlt: 'A carved wooden door on a stone façade in Recoleta'
+coverCredit: 'Phillip Capper · CC BY 2.0'
+coverCreditUrl: 'https://commons.wikimedia.org/wiki/File:Aspects_of_Recoleta%2C_Buenos_Aires%2C_17th._Jan._2011_-_Flickr_-_PhillipC_%282%29.jpg'
 featured: true
 ---
 

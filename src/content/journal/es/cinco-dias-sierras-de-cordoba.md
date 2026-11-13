@@ -6,6 +6,10 @@ category: itineraries
 place: 'Sierras de Córdoba, Argentina'
 translationKey: sierras-cordoba
 tone: stone
+cover: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Estancia_Jesu%C3%ADtica_Alta_Gracia_2.JPG/1280px-Estancia_Jesu%C3%ADtica_Alta_Gracia_2.JPG'
+coverAlt: 'Detalle barroco de la iglesia de la estancia jesuítica de Alta Gracia'
+coverCredit: 'Silber98 · CC BY-SA 3.0'
+coverCreditUrl: 'https://commons.wikimedia.org/wiki/File:Estancia_Jesu%C3%ADtica_Alta_Gracia_2.JPG'
 ---
 
 Las Sierras de Córdoba son adonde los argentinos van a bajar el ritmo. Montañas bajas, ríos claros y pueblos con su propio tiempo las vuelven una primera ruta ideal para quienes prefieren profundidad antes que distancia.

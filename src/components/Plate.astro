@@ -1,18 +1,29 @@
 ---
+import { BASE } from '../i18n/ui';
 interface Props {
   src?: string;
   alt?: string;
   tone?: 'sand' | 'stone' | 'olive' | 'clay' | 'ink';
   label?: string;
   note?: string;
+  /** Crédito de la foto (autor · licencia), obligatorio para fotos con licencia Creative Commons. */
+  credit?: string;
+  creditUrl?: string;
+  /** false cuando la placa está dentro de otro link (tarjetas): el crédito va como texto. */
+  linkCredit?: boolean;
   class?: string;
   eager?: boolean;
 }
-const { src, alt = '', tone = 'sand', label, note, class: cls = '', eager = false } = Astro.props;
+const { src, alt = '', tone = 'sand', label, note, credit, creditUrl, linkCredit = true, class: cls = '', eager = false } = Astro.props;
+// Las rutas locales (/images/...) llevan el prefijo del sitio; las URLs externas quedan igual.
+const url = src && src.startsWith('/') ? BASE + src : src;
 ---
-{src ? (
+{url ? (
   <div class:list={['plate', cls]}>
-    <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    <img src={url} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    {credit && (creditUrl && linkCredit
+      ? <a class="plate__credit" href={creditUrl} target="_blank" rel="noopener">{credit}</a>
+      : <span class="plate__credit">{credit}</span>)}
   </div>
 ) : (
   <div class:list={['plate', 'plate--placeholder', `tone-${tone}`, cls]} role="img" aria-label={alt || label || ''}>
