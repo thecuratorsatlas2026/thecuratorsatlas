@@ -1,5 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
-import type { Lang } from '../i18n/ui';
+import { BASE, type Lang } from '../i18n/ui';
 
 export type Article = CollectionEntry<'journal'>;
 
@@ -12,7 +12,7 @@ export function articleSlug(entry: Article): string {
 }
 
 export function articleUrl(entry: Article): string {
-  return `/${articleLang(entry)}/journal/${articleSlug(entry)}/`;
+  return `${BASE}/${articleLang(entry)}/journal/${articleSlug(entry)}/`;
 }
 
 export async function getArticles(lang: Lang): Promise<Article[]> {

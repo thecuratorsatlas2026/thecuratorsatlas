@@ -1,5 +1,6 @@
 ---
 // Raíz del sitio: envía al idioma guardado o al del navegador (EN por defecto).
+import { BASE } from '../i18n/ui';
 ---
 <!doctype html>
 <html lang="en">
@@ -7,16 +8,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>The Curator’s Atlas</title>
-    <link rel="canonical" href="/en/" />
-    <link rel="alternate" hreflang="en" href="/en/" />
-    <link rel="alternate" hreflang="es" href="/es/" />
-    <script is:inline>
+    <link rel="canonical" href={`${BASE}/en/`} />
+    <link rel="alternate" hreflang="en" href={`${BASE}/en/`} />
+    <link rel="alternate" hreflang="es" href={`${BASE}/es/`} />
+    <script is:inline define:vars={{ BASE }}>
       var l = null;
       try { l = localStorage.getItem('lang'); } catch (e) {}
       if (!l) l = (navigator.language || 'en').toLowerCase().indexOf('es') === 0 ? 'es' : 'en';
-      location.replace('/' + l + '/');
+      location.replace(BASE + '/' + l + '/');
     </script>
-    <noscript><meta http-equiv="refresh" content="0; url=/en/" /></noscript>
+    <noscript><meta http-equiv="refresh" content={`0; url=${BASE}/en/`} /></noscript>
     <style>body{background:#f4efe6}</style>
   </head>
   <body></body>

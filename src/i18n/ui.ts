@@ -157,9 +157,12 @@ export function otherLang(lang: Lang): Lang {
 }
 
 /** Construye una URL interna con prefijo de idioma: path('es', 'about') → /es/about/ */
+/** Prefijo del sitio (vacío en Cloudflare; '/thecuratorsatlas' en GitHub Pages). */
+export const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 export function path(lang: Lang, ...parts: string[]): string {
   const rest = parts.filter(Boolean).join('/');
-  return `/${lang}/${rest ? rest + '/' : ''}`;
+  return `${BASE}/${lang}/${rest ? rest + '/' : ''}`;
 }
 
 export function formatDate(date: Date, lang: Lang): string {
